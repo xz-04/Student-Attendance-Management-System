@@ -14,10 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 @WebServlet("/SaveProfileServlet")
-@MultipartConfig(
-        maxFileSize = 1024 * 1024 * 5, // Max 5MB
-        maxRequestSize = 1024 * 1024 * 25 // Max 25MB overall
-)
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 25)
 public class SaveProfileServlet extends HttpServlet {
 
     @Override
@@ -36,19 +33,6 @@ public class SaveProfileServlet extends HttpServlet {
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // --- NEW: MALAYSIAN PHONE VALIDATION ---
-        // Matches: 01x-xxxxxxx, 01xxxxxxxx, +601xxxxxxxxx, 601xxxxxxxxx
-        String phoneRegex = "^(\\+?6?01)[0-46-9]-?[0-9]{7,8}$";
-        if (phoneNo != null && !phoneNo.trim().isEmpty()) {
-            phoneNo = phoneNo.trim();
-            if (!phoneNo.matches(phoneRegex)) {
-                session.setAttribute("msgError", "Update Failed: Please enter a valid Malaysian mobile number (e.g., 0123456789).");
-                response.sendRedirect("ProfileServlet");
-                return;
-            }
-        }
-
-        // 1. EXTRACT IMAGE DATA
         byte[] rawImageBytes = null;
         Part photoPart = request.getPart("profilePhoto");
         if (photoPart != null && photoPart.getSize() > 0) {
@@ -62,29 +46,29 @@ public class SaveProfileServlet extends HttpServlet {
             }
         }
 
-        // 2. DATABASE TRANSACTION
-        // Use try-with-resources to manage connection lifecycle
-        try (Connection conn = DBConnection.getConnection()) {
-            conn.setAutoCommit(false); // Start transaction
+        // Declare Connection outside to keep it in scope for the entire method
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
 
-            // PASSWORD VALIDATION
+            // Password handling
             boolean changePassword = (currentPassword != null && !currentPassword.isEmpty()
                     && newPassword != null && !newPassword.isEmpty());
 
             if (changePassword) {
                 if (!newPassword.equals(confirmPassword)) {
-                    session.setAttribute("msgError", "Update Failed: Passwords do not match!");
+                    session.setAttribute("msgError", "Passwords do not match!");
                     response.sendRedirect("ProfileServlet");
                     return;
                 }
 
-                // Verify current password
                 String pwdVerifySql = "SELECT password FROM users WHERE matricNo = ?";
                 try (PreparedStatement psVerify = conn.prepareStatement(pwdVerifySql)) {
                     psVerify.setString(1, userId);
                     try (ResultSet rs = psVerify.executeQuery()) {
                         if (rs.next() && !rs.getString("password").equals(currentPassword)) {
-                            session.setAttribute("msgError", "Update Failed: Incorrect current password!");
+                            session.setAttribute("msgError", "Incorrect current password!");
                             response.sendRedirect("ProfileServlet");
                             return;
                         }
@@ -92,7 +76,7 @@ public class SaveProfileServlet extends HttpServlet {
                 }
             }
 
-            // DYNAMIC UPDATE SQL
+            // Build dynamic update
             StringBuilder sql = new StringBuilder("UPDATE users SET phoneNo = ?");
             if (changePassword) {
                 sql.append(", password = ?");
@@ -103,24 +87,35 @@ public class SaveProfileServlet extends HttpServlet {
             sql.append(" WHERE matricNo = ?");
 
             try (PreparedStatement ps = conn.prepareStatement(sql.toString())) {
-                int paramIdx = 1;
-                ps.setString(paramIdx++, phoneNo != null ? phoneNo.trim() : "");
+                int i = 1;
+                ps.setString(i++, phoneNo != null ? phoneNo.trim() : "");
                 if (changePassword) {
-                    ps.setString(paramIdx++, newPassword);
+                    ps.setString(i++, newPassword);
                 }
                 if (rawImageBytes != null) {
-                    ps.setBytes(paramIdx++, rawImageBytes);
+                    ps.setBytes(i++, rawImageBytes);
                 }
-                ps.setString(paramIdx, userId);
+                ps.setString(i, userId);
                 ps.executeUpdate();
             }
 
-            conn.commit(); // Finalize transaction
+            conn.commit();
             session.setAttribute("msgSuccess", "Profile updated successfully!");
 
         } catch (SQLException e) {
+            if (conn != null) try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             session.setAttribute("msgError", "Database error: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            if (conn != null) try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         response.sendRedirect("ProfileServlet");

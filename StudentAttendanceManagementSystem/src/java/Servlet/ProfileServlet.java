@@ -12,10 +12,16 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 @WebServlet("/ProfileServlet")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1,
+        maxFileSize = 1024 * 1024 * 1,
+        maxRequestSize = 1024 * 1024 * 15
+)
 public class ProfileServlet extends HttpServlet {
 
     @Override
@@ -115,8 +121,46 @@ public class ProfileServlet extends HttpServlet {
     }
 
     @Override
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("userId") == null) {
+
+            response.sendRedirect("login.jsp");
+
+            return;
+
+        }
+
+        String userId = (String) session.getAttribute("userId");
+
+        Part filePart = request.getPart("profilePhoto"); // "profilePhoto" must match the name attribute in your <input type="file">
+
+        if (filePart != null && filePart.getSize() > 0) {
+
+            String sql = "UPDATE users SET profilePhoto = ? WHERE matricNo = ?";
+
+            try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setBinaryStream(1, filePart.getInputStream(), (int) filePart.getSize());
+
+                ps.setString(2, userId);
+
+                ps.executeUpdate();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+        }
+
+        // Redirect back to profile page to refresh view
+        response.sendRedirect("ProfileServlet");
+
     }
 }

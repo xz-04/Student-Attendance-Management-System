@@ -1531,3 +1531,241 @@ body {
 .hidden-step-panel {
     display: none;
 }
+
+/* ==========================================================================
+   COMPLETE MODERN REDESIGN OVERRIDE
+   Keeps ALL existing class names unchanged
+   ========================================================================== */
+
+:root{
+    --primary-teal:#0ea5a4;
+    --dark-teal:#0f766e;
+    --sidebar-bg:#0b5f5c;
+    --light-bg:#f8fafc;
+}
+
+body{
+    background:linear-gradient(135deg,#f8fafc,#eef6f6);
+    font-family:Inter,Segoe UI,Arial,sans-serif !important;
+    color:#1f2937;
+}
+
+.main-content{
+    padding:32px !important;
+}
+
+.dashboard-header{
+    border-bottom:1px solid #e5e7eb !important;
+    margin-bottom:32px !important;
+}
+
+.dashboard-header h1{
+    font-size:30px !important;
+    color:#111827;
+}
+
+.sidebar{
+    background:linear-gradient(180deg,#0f766e,#14b8a6) !important;
+    box-shadow:4px 0 20px rgba(0,0,0,.12);
+}
+
+.sidebar-logo{
+    font-size:28px;
+}
+
+.nav-menu li{
+    margin:6px 12px;
+    border-radius:14px;
+}
+
+.nav-menu li.active{
+    border-left:none !important;
+    background:rgba(255,255,255,.18) !important;
+    backdrop-filter:blur(8px);
+}
+
+.kpi-card,
+.alert-box,
+.qr-display-container,
+.scanner-card-box,
+.reset-container-card,
+.admin-logs-timeline-container,
+table,
+.leave-records-table,
+.attendance-summary-table{
+    border:none !important;
+    border-radius:18px !important;
+    box-shadow:0 10px 30px rgba(15,23,42,.08) !important;
+    overflow:hidden;
+}
+
+.kpi-card{
+    padding:28px !important;
+}
+
+.kpi-card h3{
+    font-size:32px !important;
+    color:#0f766e;
+}
+
+th,
+.attendance-summary-table th,
+.leave-records-table th{
+    background:linear-gradient(90deg,#0ea5a4,#14b8a6) !important;
+    color:white !important;
+    border:none !important;
+}
+
+td{
+    border-color:#eef2f7 !important;
+}
+
+.theme-scan-btn,
+.submit-application-btn,
+.start-session-btn,
+.report-btn-generate,
+.logout-link{
+    border-radius:12px !important;
+    border:none !important;
+    background:linear-gradient(135deg,#0ea5a4,#14b8a6) !important;
+    box-shadow:0 8px 20px rgba(20,184,166,.25);
+}
+
+.theme-scan-btn:hover,
+.submit-application-btn:hover,
+.start-session-btn:hover,
+.report-btn-generate:hover{
+    transform:translateY(-2px);
+}
+
+.admin-action-btn,
+.theme-btn-action,
+.table-row-action-btn,
+.report-btn-preview,
+.cancel-application-btn,
+.back-history-btn{
+    border-radius:12px !important;
+    border:1px solid #d1d5db !important;
+}
+
+input,
+select,
+textarea,
+.form-dropdown-input,
+.form-text-layout-input,
+.form-textarea-input,
+.admin-rules-numeric-input{
+    border:1px solid #d1d5db !important;
+    border-radius:12px !important;
+    background:#fff !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#0ea5a4 !important;
+    box-shadow:0 0 0 4px rgba(14,165,164,.15);
+}
+
+.search-section-row,
+.manual-entry-form,
+.admin-search-group,
+.filter-box-inline{
+    border:none !important;
+    border-radius:14px !important;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.status-badge,
+.badge-status{
+    border-radius:999px !important;
+}
+
+.alert-badge{
+    background:#ef4444 !important;
+}
+
+.satisfactory-badge{
+    background:#dcfce7 !important;
+    color:#166534 !important;
+    border:none !important;
+}
+
+.leave-btn-approve{
+    border-radius:10px !important;
+    background:#10b981 !important;
+}
+
+.leave-btn-reject{
+    border-radius:10px !important;
+}
+
+.viewfinder-frame,
+.scanner-view-wrapper{
+    border-radius:24px !important;
+    overflow:hidden !important;
+    box-shadow:0 15px 40px rgba(0,0,0,.18);
+}
+
+.file-dropzone-container{
+    border:2px dashed #14b8a6 !important;
+    border-radius:16px !important;
+    background:#f0fdfa !important;
+}
+
+.qr-meta-badge{
+    background:#ccfbf1 !important;
+    color:#115e59 !important;
+}
+
+.delete-action-btn{
+    border-radius:10px !important;
+    box-shadow:0 8px 20px rgba(239,68,68,.25) !important;
+}
+
+.role-toggle-tab-btn{
+    border-radius:14px 14px 0 0 !important;
+}
+
+.admin-user-role-tabs-row{
+    border-bottom:1px solid #e5e7eb !important;
+}
+
+.log-timeline-row-item:hover{
+    background:#f8fafc;
+}
+
+
+.btn-action {
+    padding: 14px 35px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.btn-save {
+    background-color: #00897b;
+    color: white;
+}
+
+.btn-save:hover {
+    background-color: #00695c;
+    transform: translateY(-2px);
+}
+
+.btn-pass {
+    background-color: #34495e;
+    color: white;
+}
+
+.btn-pass:hover {
+    background-color: #2c3e50;
+    transform: translateY(-2px);
+}
