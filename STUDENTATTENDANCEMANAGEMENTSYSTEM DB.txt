@@ -1,0 +1,281 @@
+-- studentattendancemanagementsystem db
+
+CREATE DATABASE STUDENTATTENDANCEMANAGEMENTSYSTEM;
+
+USE STUDENTATTENDANCEMANAGEMENTSYSTEM;
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+-- Table: `faculty`
+CREATE TABLE `faculty` (
+  `facultyName` varchar(10) NOT NULL,
+  `facultyFullname` varchar(200) NOT NULL,
+  PRIMARY KEY (`facultyName`)
+);
+
+-- Table: `users`
+CREATE TABLE `users` (
+  `matricNo` varchar(20) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `fullName` varchar(150) NOT NULL,
+  `role` varchar(20) NOT NULL,
+  `facultyName` varchar(10) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `phoneNo` varchar(20) DEFAULT NULL,
+  `profilePhoto` longblob DEFAULT NULL,
+  PRIMARY KEY (`matricNo`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`facultyName`) REFERENCES `faculty` (`facultyName`)
+);
+
+-- Table: `programme`
+CREATE TABLE `programme` (
+  `programmeId` varchar(10) NOT NULL,
+  `programmeName` varchar(100) NOT NULL,
+  `facultyName` varchar(10) NOT NULL,
+  PRIMARY KEY (`programmeId`),
+  CONSTRAINT `programme_ibfk_1` FOREIGN KEY (`facultyName`) REFERENCES `faculty` (`facultyName`) ON UPDATE CASCADE
+);
+
+-- Table: `student`
+CREATE TABLE `student` (
+  `matricNo` varchar(20) NOT NULL,
+  `programmeId` varchar(10) NOT NULL,
+  `intakeDate` date NOT NULL,
+  `session` varchar(20) GENERATED ALWAYS AS (case when month(`intakeDate`) >= 8 then concat(year(`intakeDate`),'/',year(`intakeDate`) + 1) else concat(year(`intakeDate`) - 1,'/',year(`intakeDate`)) end) STORED,
+  `semester` varchar(20) GENERATED ALWAYS AS (case when month(`intakeDate`) >= 8 or month(`intakeDate`) <= 2 then 'Semester 1' else 'Semester 2' end) STORED,
+  PRIMARY KEY (`matricNo`),
+  CONSTRAINT `student_ibfk_1` FOREIGN KEY (`matricNo`) REFERENCES `users` (`matricNo`) ON DELETE CASCADE,
+  CONSTRAINT `student_ibfk_2` FOREIGN KEY (`programmeId`) REFERENCES `programme` (`programmeId`)
+);
+
+-- Table: `course`
+CREATE TABLE `course` (
+  `facultyName` varchar(10) NOT NULL,
+  `courseCode` varchar(20) NOT NULL,
+  `courseName` varchar(100) NOT NULL,
+  `yearOfStudy` int(1) DEFAULT NULL,
+  `semesterTarget` int(1) DEFAULT NULL,
+  `courseStatus` varchar(20) NOT NULL DEFAULT 'Core',
+  PRIMARY KEY (`courseCode`),
+  CONSTRAINT `course_ibfk_1` FOREIGN KEY (`facultyName`) REFERENCES `faculty` (`facultyName`)
+);
+
+-- Table: `lecturer`
+CREATE TABLE `lecturer` (
+  `matricNo` varchar(20) NOT NULL,
+  PRIMARY KEY (`matricNo`),
+  CONSTRAINT `lecturer_ibfk_1` FOREIGN KEY (`matricNo`) REFERENCES `users` (`matricNo`)
+);
+
+-- Table: `attendancesession`
+CREATE TABLE `attendancesession` (
+  `sessionId` varchar(100) NOT NULL,
+  `courseCode` varchar(20) NOT NULL,
+  `matricNo` varchar(20) NOT NULL,
+  `date` date NOT NULL,
+  `startTime` time NOT NULL,
+  `endTime` time NOT NULL,
+  `venue` varchar(100) DEFAULT NULL,
+  `qrToken` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`sessionId`),
+  CONSTRAINT `attendancesession_ibfk_1` FOREIGN KEY (`courseCode`) REFERENCES `course` (`courseCode`) ON DELETE CASCADE,
+  CONSTRAINT `attendancesession_ibfk_2` FOREIGN KEY (`matricNo`) REFERENCES `lecturer` (`matricNo`)
+);
+
+-- Table: `attendancerecord`
+CREATE TABLE `attendancerecord` (
+  `recordId` varchar(100) NOT NULL,
+  `sessionId` varchar(100) NOT NULL,
+  `matricNo` varchar(20) NOT NULL,
+  `checkinTime` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ipAddress` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`recordId`),
+  CONSTRAINT `attendancerecord_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `attendancesession` (`sessionId`) ON DELETE CASCADE,
+  CONSTRAINT `attendancerecord_ibfk_2` FOREIGN KEY (`matricNo`) REFERENCES `student` (`matricNo`)
+);
+
+-- Table: `absenceleave`
+CREATE TABLE `absenceleave` (
+  `leaveId` varchar(100) NOT NULL,
+  `matricNo` varchar(20) NOT NULL,
+  `courseCode` varchar(20) NOT NULL,
+  `date` date NOT NULL,
+  `category` varchar(30) NOT NULL,
+  `reason` text DEFAULT NULL,
+  `evidencePath` varchar(255) DEFAULT NULL,
+  `approvalStatus` varchar(20) DEFAULT 'Pending',
+  `rejectReason` text DEFAULT NULL,
+  PRIMARY KEY (`leaveId`),
+  CONSTRAINT `absenceleave_ibfk_1` FOREIGN KEY (`matricNo`) REFERENCES `student` (`matricNo`) ON DELETE CASCADE,
+  CONSTRAINT `absenceleave_ibfk_2` FOREIGN KEY (`courseCode`) REFERENCES `course` (`courseCode`) ON DELETE CASCADE
+);
+
+-- Table: `studentcourse`
+CREATE TABLE `studentcourse` (
+  `matricNo` varchar(20) NOT NULL,
+  `courseCode` varchar(20) NOT NULL,
+  PRIMARY KEY (`matricNo`,`courseCode`),
+  CONSTRAINT `studentcourse_ibfk_1` FOREIGN KEY (`matricNo`) REFERENCES `student` (`matricNo`),
+  CONSTRAINT `studentcourse_ibfk_2` FOREIGN KEY (`courseCode`) REFERENCES `course` (`courseCode`) ON DELETE CASCADE
+);
+
+-- Table: `lecturercourse`
+CREATE TABLE `lecturercourse` (
+  `matricNo` varchar(20) NOT NULL,
+  `courseCode` varchar(20) NOT NULL,
+  PRIMARY KEY (`matricNo`,`courseCode`),
+  CONSTRAINT `lecturercourse_ibfk_1` FOREIGN KEY (`matricNo`) REFERENCES `lecturer` (`matricNo`),
+  CONSTRAINT `lecturercourse_ibfk_2` FOREIGN KEY (`courseCode`) REFERENCES `course` (`courseCode`) ON DELETE CASCADE
+);
+
+-- Table: `systemrule`
+CREATE TABLE `systemrule` (
+  `ruleId` int(11) NOT NULL,
+  `attendanceThreshold` int(11) NOT NULL,
+  PRIMARY KEY (`ruleId`)
+);
+
+-- View: `v_student_current_status`
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_student_current_status` AS 
+SELECT `s`.`matricNo` AS `matricNo`, `s`.`programmeId` AS `programmeId`, `s`.`intakeDate` AS `intakeDate`, `s`.`session` AS `intakeSession`, `s`.`semester` AS `intakeSemester`, CASE WHEN month(curdate()) >= 10 THEN concat(year(curdate()),'/',year(curdate()) + 1) ELSE concat(year(curdate()) - 1,'/',year(curdate())) END AS `currentSession`, concat(case when `s`.`intakeDate` > curdate() then '1st Year' when floor(period_diff(extract(year_month from curdate()),extract(year_month from `s`.`intakeDate`)) / 12) + 1 = 1 then '1st Year' when floor(period_diff(extract(year_month from curdate()),extract(year_month from `s`.`intakeDate`)) / 12) + 1 = 2 then '2nd Year' when floor(period_diff(extract(year_month from curdate()),extract(year_month from `s`.`intakeDate`)) / 12) + 1 = 3 then '3rd Year' else '4th Year+' end,' (',case when `s`.`intakeDate` > curdate() then 'Upcoming Sem 1' when month(curdate()) >= 10 or month(curdate()) <= 2 then 'Sem 1' when month(curdate()) >= 3 and month(curdate()) <= 7 then 'Sem 2' else case when year(`s`.`intakeDate`) = year(curdate()) and month(`s`.`intakeDate`) >= 8 then 'Sem 1 Induction' else 'Sem 2 Break' end end,')') AS `currentLevel` FROM `student` AS `s`;
+
+-- Triggers (Keep outside as they refer to tables post-creation)
+DELIMITER $$
+CREATE TRIGGER `auto_assign_new_course_to_students` AFTER INSERT ON `course` FOR EACH ROW BEGIN
+    IF NEW.courseStatus = 'Core' THEN
+        INSERT INTO studentcourse (matricNo, courseCode)
+        SELECT s.matricNo, NEW.courseCode
+        FROM v_student_current_status s
+        WHERE (
+            (s.currentLevel LIKE CONCAT('%', NEW.yearOfStudy, 'nd Year (Sem ', NEW.semesterTarget, ')%')) OR
+            (s.currentLevel LIKE CONCAT('%', NEW.yearOfStudy, 'st Year (Sem ', NEW.semesterTarget, ')%')) OR
+            (s.currentLevel LIKE CONCAT('%', NEW.yearOfStudy, 'rd Year (Sem ', NEW.semesterTarget, ')%')) OR
+            (s.currentLevel LIKE CONCAT('%', NEW.yearOfStudy, 'th Year+ (Sem ', NEW.semesterTarget, ')%'))
+        ) 
+        OR 
+        (
+            NEW.yearOfStudy = 1 
+            AND NEW.semesterTarget = 1 
+            AND (s.currentLevel LIKE '%Sem 1 Induction%' OR s.currentLevel LIKE '%Upcoming Sem 1%')
+        );
+    END IF;
+END$$
+
+CREATE TRIGGER `auto_assign_student_courses` AFTER INSERT ON `student` FOR EACH ROW BEGIN
+    SET @initial_sem = CASE 
+        WHEN MONTH(NEW.intakeDate) >= 8 OR MONTH(NEW.intakeDate) <= 2 THEN 1
+        ELSE 2
+    END;
+    INSERT INTO studentcourse (matricNo, courseCode)
+    SELECT NEW.matricNo, c.courseCode
+    FROM course c
+    WHERE c.courseStatus = 'Core'
+      AND c.yearOfStudy = 1             
+      AND c.semesterTarget = @initial_sem;
+END$$
+DELIMITER ;
+COMMIT;
+
+
+
+
+
+INSERT INTO `faculty`(`facultyName`, `facultyFullname`) VALUES 
+('PPPA','PUSAT PEMBANGUNAN DAN PENGURUSAN AKADEMIK'),
+('FSKM','FAKULTI SAINS KOMPUTER DAN MATEMATIK'),
+('FTKK','FAKULTI TEKNOLOGI KEJURUTERAAN KELAUTAN'),
+('FSMA','FAKULTI SAINS MAKANAN DAN AGROTEKNOLOGI'),
+('FPSA','FAKULTI SAINS PERIKANAN DAN AKUAKULTUR'),
+('FPEPS','FAKULTI PERNIAGAAN, EKONOMI DAN PEMBANGUNAN SOSIAL'),
+('FSSM','FAKULTI SAINS DAN SEKITARAN MARIN'),
+('FPM','FAKULTI PENGAJIAN MARITIM'),
+('PPAL','PUSAT PENDIDIKAN ASAS DAN LANJUTAN'),
+('PASTEM','PUSAT ASASI STEM');
+
+INSERT INTO `systemrule`(`ruleId`, `attendanceThreshold`) VALUES
+('1', '80');
+
+
+
+
+
+INSERT INTO `users` (`matricNo`, `password`, `fullName`, `role`, `facultyName`, `email`) VALUES
+('A001', '123', 'Admin', 'Admin', 'PPPA', 'admin@edu.my'),
+('L001', '123', 'Dr. Smith', 'lecturer', 'FSKM', 'smith@university.edu'),
+('S001', '123', 'Asif', 'student', 'FSKM', 'asif@student.edu');
+
+INSERT INTO `programme` (`programmeId`, `programmeName`, `facultyName`) VALUES 
+('CS-SE', 'COMPUTER SCIENCE (SOFTWARE ENGINEERING)', 'FSKM'), 
+('CS-IM', 'COMPUTER SCIENCE (MARITIME INFORMATICS)', 'FSKM'), 
+('CS-MC', 'COMPUTER SCIENCE (MOBILE COMPUTING)', 'FSKM');
+
+INSERT INTO `student` (`matricNo`, `programmeId`, `intakeDate`) VALUES
+('s001', 'CS-SE', '2025-09-17');
+
+INSERT INTO `lecturer` (`matricNo`) VALUES
+('l001');
+
+
+
+
+
+INSERT INTO `course` (`facultyName`, `courseCode`, `courseName`, `yearOfStudy`, `semesterTarget`, `courseStatus`) VALUES
+-- Semester 1
+('FSKM', 'CSF3003', 'Discrete Structure', 1, 1, 'Core'),
+('FSKM', 'CSF3023', 'System Thinking and Logic', 1, 1, 'Core'),
+('FSKM', 'CSF3034', 'Programming', 1, 1, 'Core'),
+('FSKM', 'CSF3143', 'Basics of Software Engineering', 1, 1, 'Core'),
+('FSKM', 'CSF3243', 'Computer Organisation and Architecture', 1, 1, 'Core'),
+
+-- Semester 2
+('FSKM', 'CSE3203', 'Software Requirement Engineering', 1, 2, 'Core'),
+('FSKM', 'CSF3043', 'Object-Oriented Programming', 1, 2, 'Core'),
+('FSKM', 'CSF3213', 'Operating Systems', 1, 2, 'Core'),
+('FSKM', 'MTK3053', 'Introduction to Statistics', 1, 2, 'Core'),
+
+-- Semester 3
+('FSKM', 'CSF3013', 'Data Structure and Algorithm', 2, 1, 'Core'),
+('FSKM', 'CSF3113', 'System Analysis and Design', 2, 1, 'Core'),
+('FSKM', 'CSF3123', 'Database', 2, 1, 'Core'),
+('FSKM', 'CSF3133', 'Web-Based Interface Design', 2, 1, 'Core'),
+
+-- Semester 4
+('FSKM', 'CSE3023', 'Web-Based Application Development', 2, 2, 'Core'),
+('FSKM', 'CSE3413', 'Software Testing', 2, 2, 'Core'),
+('FSKM', 'CSE3433', 'Software Architecture', 2, 2, 'Core'),
+('FSKM', 'CSE3953', 'Application System Development Project', 2, 2, 'Core'),
+('FSKM', 'CSF3223', 'Networking', 2, 2, 'Core'),
+
+-- Semester 5
+('FSKM', 'CSE3403', 'Software Project Management', 3, 1, 'Core'),
+('FSKM', 'CSE3423', 'Software Quality Assurance', 3, 1, 'Core'),
+('FSKM', 'CSF3253', 'Intelligent System', 3, 1, 'Core'),
+('FSKM', 'CSF4984', 'Final Year Project I', 3, 1, 'Core'),
+('FSKM', 'CSM3313', 'IoT Computing', 3, 1, 'Core'),
+
+-- Semester 6
+('FSKM', 'CSE3443', 'Software Maintenance and Evolution', 3, 2, 'Core'),
+('FSKM', 'CSE3453', 'Ethics and Professionalism Practices', 3, 2, 'Core'),
+('FSKM', 'CSF3233', 'Cyber Security', 3, 2, 'Core'),
+('FSKM', 'CSF4994', 'Final Year Project II', 3, 2, 'Core');
+
+
+
+INSERT INTO `course` (`facultyName`, `courseCode`, `courseName`, `courseStatus`) VALUES
+('PPAL', 'KOR1001', 'Korean I', 'Elective'),
+('PPAL', 'KOR2001', 'Korean II', 'Elective'),
+('PPAL', 'JAP1001', 'Japanese I', 'Elective'),
+('PPAL', 'JAP2001', 'Japanese II', 'Elective');
+
+
+
+
+
+
+
+
+
+
+
