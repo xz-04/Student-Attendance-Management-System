@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 @WebServlet("/LoadAttendance")
-public class LoadAttendanceServlet extends HttpServlet {
+public class XXLoadAttendanceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

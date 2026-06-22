@@ -32,7 +32,7 @@
         <li class="<%= (currentPage.contains("session.jsp") || currentPage.contains("AdminSessionsServlet") || currentPage.contains("viewSessionAttendance.jsp") || currentPage.contains("AdminViewSessionServlet")) ? "active" : ""%>">
             <a href="AdminSessionsServlet" class="nav-btn">Sessions</a>
         </li>
-        <li class="<%= currentPage.contains("AdminUsersServlet") || currentPage.contains("users.jsp") || currentPage.contains("addCourseAssignment.jsp") || currentPage.contains("assignCourse.jsp") || currentPage.contains("addUser.jsp") || currentPage.contains("addCourseAssignment.jsp") || currentPage.contains("assignLecturerCourse.jsp") ? "active" : ""%>">
+        <li class="<%= currentPage.contains("AdminUsersServlet") || currentPage.contains("users.jsp") || currentPage.contains("addCourseAssignment.jsp") || currentPage.contains("assignCourse.jsp") || currentPage.contains("addUser.jsp") || currentPage.contains("addCourseAssignment.jsp") || currentPage.contains("assignLecturerCourse.jsp") || currentPage.contains("viewLecturerCourses.jsp") ? "active" : ""%>">
             <a href="AdminUsersServlet?roleTab=student" class="nav-btn">Users</a>
         </li>
 

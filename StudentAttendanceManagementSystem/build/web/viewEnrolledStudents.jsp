@@ -12,7 +12,7 @@
 
         <div class="main-content">
             <div class="dashboard-header">
-                <h1>Course Enrolled Roster</h1>
+                <h1>Course Enrolled</h1>
                 <a href="LecturerCoursesServlet" class="logout-link" style="background-color: #555555;">Back to Sessions</a>
             </div>
 

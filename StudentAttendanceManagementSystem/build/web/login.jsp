@@ -51,9 +51,6 @@
 
             <input type="submit" value="LOGIN">
 
-            <div class="forgetPassword-text">
-                Forgot Password? <a href="forgetPassword.jsp">Click here</a>
-            </div>
         </form>
 
         <script>

@@ -24,7 +24,6 @@ public class LoadCourseSessionsServlet extends HttpServlet {
             return;
         }
 
-        String lecturerMatricNo = (String) session.getAttribute("userId");
         String courseCode = request.getParameter("courseCode");
 
         if (courseCode == null || courseCode.trim().isEmpty()) {
@@ -36,18 +35,19 @@ public class LoadCourseSessionsServlet extends HttpServlet {
         List<Map<String, Object>> sessionsList = new ArrayList<>();
         String courseName = "";
 
+        // Query to get course name
         String infoSql = "SELECT courseName FROM course WHERE courseCode = ?";
 
-        // The query uses aliased column names for clean time formatting (HH:mm)
+        // MODIFIED: Removed 'asess.matricNo = ?' to fetch ALL sessions for the course
         String sessionsSql = "SELECT asess.sessionId, asess.date, "
                 + "DATE_FORMAT(asess.startTime, '%H:%i') AS startT, "
                 + "DATE_FORMAT(asess.endTime, '%H:%i') AS endT, "
                 + "asess.venue, asess.qrToken, "
-                + "  (SELECT COUNT(*) FROM attendancerecord ar WHERE ar.sessionId = asess.sessionId) AS present_count, "
-                + "  (SELECT COUNT(*) FROM studentcourse sc WHERE sc.courseCode = asess.courseCode) AS total_students "
+                + "(SELECT COUNT(*) FROM attendancerecord ar WHERE ar.sessionId = asess.sessionId) AS present_count, "
+                + "(SELECT COUNT(*) FROM studentcourse sc WHERE sc.courseCode = asess.courseCode) AS total_students "
                 + "FROM attendancesession asess "
-                + "WHERE asess.matricNo = ? AND asess.courseCode = ? "
-                + "ORDER BY sessionId DESC";
+                + "WHERE asess.courseCode = ? "
+                + "ORDER BY asess.date DESC, asess.startTime DESC";
 
         try (Connection conn = DBConnection.getConnection()) {
             // 1. Fetch Course Full Name
@@ -60,21 +60,17 @@ public class LoadCourseSessionsServlet extends HttpServlet {
                 }
             }
 
-            // 2. Fetch Session Records List
+            // 2. Fetch ALL Session Records
             try (PreparedStatement ps = conn.prepareStatement(sessionsSql)) {
-                ps.setString(1, lecturerMatricNo.trim());
-                ps.setString(2, courseCode);
+                ps.setString(1, courseCode); // Only one parameter needed now
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         Map<String, Object> row = new HashMap<>();
                         row.put("sessionId", rs.getString("sessionId"));
                         row.put("date", rs.getDate("date"));
-
-                        // FIXED: Retrieve variables matching the exact ALIAS labels assigned in the SQL query string
-                        row.put("startTime", rs.getString("startT")); // Maps to ${sessionItem.startTime}
-                        row.put("endTime", rs.getString("endT"));     // Maps to ${sessionItem.endTime}
-
+                        row.put("startTime", rs.getString("startT"));
+                        row.put("endTime", rs.getString("endT"));
                         row.put("venue", rs.getString("venue"));
                         row.put("presentCount", rs.getInt("present_count"));
                         row.put("totalStudents", rs.getInt("total_students"));
@@ -88,11 +84,10 @@ public class LoadCourseSessionsServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        // Bind attributes safely for the JSP rendering logic
+        // Bind attributes
         request.setAttribute("courseCode", courseCode);
         request.setAttribute("courseName", courseName);
         request.setAttribute("sessionList", sessionsList);
-        request.setAttribute("pastSessions", sessionsList);
 
         request.getRequestDispatcher("viewCourseSessions.jsp").forward(request, response);
     }

@@ -121,50 +121,38 @@ public class CourseServlet extends HttpServlet {
 
     // 2. ACTION: ADD NEW COURSE ENTRY MODULE
     private void addCourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String facultyName = request.getParameter("facultyName").trim().toUpperCase();
+        String facultyName = request.getParameter("facultyName");
         String courseCode = request.getParameter("courseCode").trim().toUpperCase();
-        String courseName = request.getParameter("courseName").trim();
-
+        String courseName = request.getParameter("courseName");
         String courseStatus = request.getParameter("courseStatus");
-        if (courseStatus == null) {
-            courseStatus = "Core";
-        }
-
-        int semesterTarget = Integer.parseInt(request.getParameter("semesterTarget"));
 
         int yearOfStudy = 0;
-        if ("Core".equalsIgnoreCase(courseStatus)) {
-            String yearParam = request.getParameter("yearOfStudy");
-            if (yearParam != null && !yearParam.isEmpty()) {
-                yearOfStudy = Integer.parseInt(yearParam);
+        int semesterTarget = 0;
+
+        // Only parse year/semester if NOT elective
+        if (!"Elective".equalsIgnoreCase(courseStatus)) {
+            String y = request.getParameter("yearOfStudy");
+            String s = request.getParameter("semesterTarget");
+            if (y != null && !y.isEmpty()) {
+                yearOfStudy = Integer.parseInt(y);
+            }
+            if (s != null && !s.isEmpty()) {
+                semesterTarget = Integer.parseInt(s);
             }
         }
 
-        try (Connection conn = getConnection()) {
-            String checkSql = "SELECT COUNT(*) FROM course WHERE courseCode = ?";
-            try (PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
-                checkPs.setString(1, courseCode);
-                try (ResultSet rs = checkPs.executeQuery()) {
-                    if (rs.next() && rs.getInt(1) > 0) {
-                        request.setAttribute("error", "Course code " + courseCode + " already exists.");
-                        request.getRequestDispatcher("addCourse.jsp").forward(request, response);
-                        return;
-                    }
-                }
-            }
-
-            String insertSql = "INSERT INTO course (facultyName, courseCode, courseName, yearOfStudy, semesterTarget, courseStatus) VALUES (?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement insertPs = conn.prepareStatement(insertSql)) {
-                insertPs.setString(1, facultyName);
-                insertPs.setString(2, courseCode);
-                insertPs.setString(3, courseName);
-                insertPs.setInt(4, yearOfStudy);
-                insertPs.setInt(5, semesterTarget);
-                insertPs.setString(6, courseStatus);
-                insertPs.executeUpdate();
-            }
-            response.sendRedirect("CourseServlet?action=list");
+        // Database insertion code...
+        String insertSql = "INSERT INTO course (facultyName, courseCode, courseName, yearOfStudy, semesterTarget, courseStatus) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(insertSql)) {
+            ps.setString(1, facultyName);
+            ps.setString(2, courseCode);
+            ps.setString(3, courseName);
+            ps.setInt(4, yearOfStudy);
+            ps.setInt(5, semesterTarget);
+            ps.setString(6, courseStatus);
+            ps.executeUpdate();
         }
+        response.sendRedirect("CourseServlet?action=list");
     }
 
     // 3. ACTION: FETCH COURSE DATA FOR EDIT VIEW
