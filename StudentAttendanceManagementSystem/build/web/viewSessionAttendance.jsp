@@ -8,12 +8,12 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <%@ include file="lecturerSidebar.jsp" %>
+        <%@ include file="adminSidebar.jsp" %>
 
         <div class="main-content">
             <div class="dashboard-header">
                 <h1>Session Attendance Sheet</h1>
-                <a href="LecturerCoursesServlet" class="logout-link" style="background-color: #555; text-decoration: none; padding: 10px 20px; color: white; border-radius: 4px; font-weight: bold;">BACK TO SESSIONS</a>
+                <a href="AdminViewSessionServlet" class="logout-link" style="background-color: #555; text-decoration: none; padding: 10px 20px; color: white; border-radius: 4px; font-weight: bold;">BACK TO SESSIONS</a>
             </div>
 
             <div style="background-color: #fff; padding: 20px; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 25px; display: flex; gap: 40px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); flex-wrap: wrap;">
