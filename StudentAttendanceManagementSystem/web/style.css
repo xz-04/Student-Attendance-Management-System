@@ -1,0 +1,1533 @@
+/* --- Root Theme Variables --- */
+:root {
+    --primary-teal: #00897b;
+    --dark-teal: #00695c;
+    --sidebar-bg: #009688; /* Gradient stop color */
+    --light-bg: #f4f7f6;
+}
+
+/* Layout Structure */
+body {
+    margin: 0;
+    display: flex;
+    font-family: Arial, sans-serif;
+    background-color: var(--light-bg);
+    min-height: 100vh;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Alert Box */
+.alert-box {
+    background-color: #e8e6e0;
+    border: 1px solid #333;
+    padding: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+/* KPI Container */
+.kpi-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.kpi-card {
+    flex: 1;
+    border: 1px solid #333;
+    padding: 20px;
+    text-align: center;
+    background: white;
+    border-radius: 8px;
+}
+
+.kpi-card h3 {
+    margin: 0;
+    font-size: 24px;
+}
+.kpi-card p {
+    margin: 10px 0 0 0;
+    color: #666;
+    font-size: 12px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #f9f9f9;
+}
+
+/* Header styling */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 10px; /* Space between text and line */
+    border-bottom: 2px solid #333; /* Darker, thicker line for better visibility */
+}
+
+/* Logout link styled as a proper button */
+.logout-link {
+    background-color: #ff4d4d; /* Red color */
+    color: white !important; /* Forces text to be white */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 12px 24px; /* Creates the button shape */
+    border-radius: 6px; /* Smooth rounded corners */
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease; /* Smooth hover transition */
+    text-transform: uppercase; /* Makes it look like a formal action button */
+    letter-spacing: 1px;
+}
+
+/* Hover effect */
+.logout-link:hover {
+    background-color: #e03131; /* Darker red on hover */
+    text-decoration: none; /* Keep the underline off */
+    transform: translateY(-1px); /* Slight lift effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+/* --- Core Layout Structural Bases --- */
+body {
+    margin: 0;
+    display: flex;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6; /* Soft context workspace background color */
+    min-height: 100vh;
+}
+
+/* --- Main workspace content column flow details --- */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sharp layout header row line matching reference layout */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #333333; /* Dark precise separator line */
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* --- Central arrangement containers --- */
+.checkin-layout-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.instruction-header {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #777777;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+}
+
+/* Camera Target Box Container Frame */
+.viewfinder-frame {
+    width: 340px;
+    height: 340px;
+    background-color: #e8e6e0; /* Clean frame fill content background color */
+    position: relative;
+    border: 2px solid #333333; /* Thick border lines matching reference */
+    margin-bottom: 30px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* Corner bracket lines framing */
+.viewfinder-frame .angle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border: 5px solid #111111;
+    z-index: 10;
+}
+.viewfinder-frame .top-left     {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+}
+.viewfinder-frame .top-right    {
+    top: -2px;
+    right: -2px;
+    border-left: none;
+    border-bottom: none;
+}
+.viewfinder-frame .bottom-left  {
+    bottom: -2px;
+    left: -2px;
+    border-right: none;
+    border-top: none;
+}
+.viewfinder-frame .bottom-right {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Control Action Row Placement Elements */
+.control-actions-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #cccccc; /* Separator horizontal border item line */
+    max-width: 440px;
+}
+
+/* Theme Button styling (Keeps Green/Teal accent theme colors) */
+.theme-scan-btn {
+    background-color: #00897b; /* Theme green color base */
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: background-color 0.2s ease;
+}
+
+.theme-scan-btn:hover {
+    background-color: #00695c;
+}
+
+/* Little accent interior indicator square inside the action buttons */
+.btn-accent-square {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.fallback-label {
+    margin: 35px 0 15px 0;
+    font-size: 14px;
+    color: #666666;
+    font-style: italic;
+}
+
+/* Manual Entry Combined Form Assembly Layout */
+.manual-entry-form {
+    display: flex;
+    border: 2px solid #333333; /* Dark container line bounding elements */
+    background: white;
+    width: 340px; /* Aligns exactly with your camera target box dimension */
+}
+
+.manual-entry-form input {
+    border: none;
+    padding: 14px;
+    flex: 1;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 3px;
+    outline: none;
+    font-weight: bold;
+    color: #222222;
+}
+
+.manual-entry-form button {
+    background-color: #333333; /* Solid interface contrast submission button block */
+    color: white;
+    border: none;
+    padding: 0 25px;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.manual-entry-form button:hover {
+    background-color: #111111;
+}
+
+/* --- Course Attendance Arrangement Components --- */
+
+/* Search bar inline layout block */
+.search-section-row {
+    display: flex;
+    border: 2px solid #333333;
+    background: white;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.search-section-row input {
+    border: none;
+    padding: 14px 20px;
+    flex: 1;
+    font-size: 15px;
+    outline: none;
+}
+
+.search-section-row button {
+    background-color: #e8e6e0; /* Neutral grey action toggle block */
+    color: #333333;
+    border: none;
+    border-left: 2px solid #333333;
+    padding: 0 35px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.search-section-row button:hover {
+    background-color: #d8d6d0;
+}
+
+/* Base Data Table Styling overrides */
+.attendance-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.attendance-summary-table th,
+.attendance-summary-table td {
+    padding: 16px;
+    border: 1px solid #cccccc;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.attendance-summary-table th {
+    background-color: #00897b; /* Theme Primary Green */
+    color: white;
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.monospace-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+/* Percentage Bar Elements Layout Components */
+.percentage-display-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 140px;
+}
+
+.percentage-value {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.progress-track-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e8e6e0;
+    border: 1px solid #999999;
+    position: relative;
+}
+
+.progress-fill-indicator {
+    height: 100%;
+    background-color: #333333; /* Dark solid visual progress indicator bar fill */
+}
+
+/* Action Status Indicators */
+.action-cell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
+    width: 150px;
+    box-sizing: border-box;
+}
+
+/* Red alert badge for danger thresholds */
+.alert-badge {
+    background-color: #e53935;
+    color: white;
+    border: 1px solid #333333;
+}
+
+/* Light neutral clean button for valid counts */
+.satisfactory-badge {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #333333;
+}
+
+.table-action-link {
+    font-size: 12px;
+    color: #00897b;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.table-action-link:hover {
+    color: #00695c;
+}
+
+/* --- Absence Leave Sub-Layout Components --- */
+
+/* Sub-nav row arrangement for category links filtering */
+.filter-tabs-row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.filter-tabs-row .tab-item {
+    text-decoration: none;
+    color: #666666;
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 6px;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.filter-tabs-row .tab-item:hover {
+    color: #00897b; /* Active accent color */
+}
+
+/* Thicker dynamic underline focus tracking bar indicator */
+.filter-tabs-row .tab-item.active {
+    color: #111111;
+}
+.filter-tabs-row .tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #333333; /* Underline indicator bar styling matching layout */
+}
+
+/* Table Override Layout parameters */
+.leave-records-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-bottom: 30px;
+}
+
+.leave-records-table th,
+.leave-records-table td {
+    padding: 14px;
+    border: 1px solid #cccccc;
+    text-align: left;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.leave-records-table th {
+    background-color: #00897b; /* Primary Theme Green Header Block */
+    color: white;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+/* Subtitle contextual layout fields modifier helper */
+.sub-text {
+    font-size: 11px;
+    color: #777777;
+}
+
+/* Base Badge Formatting Structural Block definitions */
+.badge-status {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    width: 90px;
+    box-sizing: border-box;
+}
+
+/* Red-Teal-Grey custom status badges to match green/teal aesthetics perfectly */
+.badge-status.jsp-pending {
+    background-color: #e0e0e0;
+    color: #333333;
+    border: 1px solid #999999;
+}
+
+.badge-status.jsp-approved {
+    background-color: #ffffff;
+    color: #00897b;
+    border: 2px solid #00897b; /* Bold matching outline green badge block */
+}
+
+.badge-status.jsp-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Bottom Interface submission creation interactive controls */
+.action-footer-row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Core execution link matching the sharp bounding boxes of SAMS format layout */
+.theme-btn-action {
+    display: inline-block;
+    background-color: white;
+    color: #333333;
+    text-decoration: none;
+    border: 2px solid #333333; /* Solid crisp block outer boundary */
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.theme-btn-action:hover {
+    background-color: #333333;
+    color: white; /* Clean block inversion effect focus toggle */
+}
+
+/* --- Core Sidebar Menu Block Layout --- */
+.sidebar {
+    width: 280px;
+    background-color: #009688; /* Keep your clean teal/green layout theme color */
+    color: white;
+    padding: 30px 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.sidebar-logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual Row Block Parameters */
+.nav-menu li {
+    position: relative;
+    padding: 18px 25px 18px 45px; /* Leave breathing space on the left side for our markers */
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+/* Default State: Display custom hollow circle marker icon */
+.nav-menu li::before {
+    content: "○";
+    position: absolute;
+    left: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.nav-menu li a.nav-btn {
+    text-decoration: none;
+    color: #e0f2f1; /* Soft tint white text for unselected state links */
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+}
+
+/* --- Active Layout Focus Transformations --- */
+.nav-menu li.active {
+    background-color: #00695c; /* Darker clean solid teal contrast selection block background */
+    border-left: 5px solid #111111; /* The bold black accent highlight vertical bar tracker */
+}
+
+/* Transform the icon symbol to a solid box block when row goes active */
+.nav-menu li.active::before {
+    content: "■";
+    color: white;
+    font-size: 12px;
+}
+
+.nav-menu li.active a.nav-btn {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Smooth hover styling adjustment */
+.nav-menu li:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.nav-menu li:hover a.nav-btn {
+    color: #ffffff;
+}
+
+/* --- Application Forms Structural Layout --- */
+.leave-application-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    max-width: 760px; /* Binds form layout cleanly to match layout width bounds */
+}
+
+.form-group-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-field-label {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #888888;
+    text-transform: uppercase;
+}
+
+/* Dropdown styling components matching sharp border layout themes */
+.form-dropdown-input {
+    width: 100%;
+    padding: 14px;
+    font-size: 14px;
+    border: 2px solid #333333;
+    background-color: white;
+    outline: none;
+    font-family: inherit;
+    border-radius: 0px; /* Keeps arrangement box look sharp */
+    cursor: pointer;
+}
+
+.form-textarea-input {
+    width: 100%;
+    height: 120px;
+    padding: 14px;
+    font-size: 14px;
+    border: 2px solid #333333;
+    background-color: white;
+    outline: none;
+    font-family: inherit;
+    resize: vertical; /* Allows vertical tracking box scaling safe controls */
+    box-sizing: border-box;
+}
+
+/* Drag & Drop zone file upload elements container */
+.file-dropzone-container {
+    width: 100%;
+    background-color: #e8e6e0; /* Beige component tint matching image background */
+    border: 2px dashed #333333; /* Distinct dotted/dashed border bounding indicator box */
+    padding: 30px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.dropzone-inner-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropzone-text {
+    font-size: 14px;
+    color: #444444;
+    margin: 0;
+}
+
+/* Styled Button triggering the hidden actual input parameter */
+.file-mock-btn {
+    display: inline-block;
+    background-color: white;
+    color: #333333;
+    border: 2px solid #333333;
+    padding: 10px 24px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.file-mock-btn:hover {
+    background-color: #333333;
+    color: white;
+}
+
+.real-file-input {
+    display: none; /* Hide default native gray browser component button block layout out of view */
+}
+
+.file-spec-info {
+    font-size: 11px;
+    color: #777777;
+    margin: 5px 0 0 0;
+}
+
+/* Footer layout handling buttons placement side by side */
+.form-actions-footer {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Core Submit Button (Uses theme green accent tint highlights) */
+.submit-application-btn {
+    background-color: #00897b; /* Keeps theme focus green tracking */
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.submit-application-btn:hover {
+    background-color: #00695c;
+}
+
+/* Cancel Action Button Structural block element */
+.cancel-application-btn {
+    display: inline-block;
+    text-decoration: none;
+    background-color: white;
+    color: #333333;
+    border: 2px solid #333333;
+    padding: 12px 28px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+.cancel-application-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.start-session-btn {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #00897b;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.start-session-btn:hover {
+    background-color: #00695c;
+}
+
+/* --- Admin Quick Action Button Styling --- */
+.admin-action-btn {
+    display: inline-block;
+    background-color: #ffffff; /* Solid white background default */
+    color: #111111;            /* Sharp dark text color */
+    text-decoration: none;     /* Removes standard anchor link underline */
+    border: 2px solid #333333; /* Distinct, crisp outer layout border line */
+    padding: 12px 24px;        /* Breathing room inside the clickable box area */
+    font-size: 12px;           /* Clean, compact text size */
+    font-weight: bold;         /* Bold typography styling */
+    letter-spacing: 1px;       /* Adds professional spacing between capital letters */
+    text-align: center;
+    text-transform: uppercase; /* Automatically forces text to uppercase format */
+    border-radius: 0px;        /* Keeps the button edges completely sharp and square */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; /* Smooth transition animation loop for hover states */
+}
+
+/* Hover & Focus Interactions */
+.admin-action-btn:hover {
+    background-color: #00897b; /* Transitions smoothly to your primary brand green */
+    color: #ffffff;            /* Flips the text color to white for readability */
+    border-color: #00897b;     /* Changes border color to match the green background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow to indicate clickability */
+    transform: translateY(-1px); /* Displaces the button up 1px for a clean lift effect */
+}
+
+/* Active Click Interaction */
+.admin-action-btn:active {
+    transform: translateY(1px);  /* Pushes button down slightly on click mouse-down */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shrinks shadow depth */
+}
+
+/* --- Attendance Session Table Action Button Styling --- */
+.table-row-action-btn {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #333333;
+    text-decoration: none;
+    border: 2px solid #333333; /* Clean sharp outline matching SAMS style rules */
+    padding: 8px 16px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.table-row-action-btn:hover {
+    background-color: #00897b; /* Transitions smoothly to your primary green theme on hover */
+    color: white;
+    border-color: #00897b;
+}
+
+/* --- Leave Application Approval View Layout Modifiers --- */
+
+/* Horizontal positioning row wrapper for filters box fields */
+.leave-filter-bar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.filter-box-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid #333333; /* Clean sharp border wrapper */
+    padding: 8px 14px;
+    background-color: white;
+}
+
+.filter-box-inline label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555555;
+}
+
+.filter-dropdown-select {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: inherit;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Document file attachment linking styles tracking */
+.table-inline-link {
+    color: #00897b;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.table-inline-link:hover {
+    color: #00695c;
+}
+
+/* Actions Button Flexbox alignment packaging grid layout dimensions */
+.table-action-btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+/* Master buttons layouts styling structural definitions blocks */
+.leave-btn-approve,
+.leave-btn-reject {
+    padding: 8px 16px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border-radius: 0px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* Solid Black design approach matching layout image choices */
+.leave-btn-approve {
+    background-color: #111111;
+    color: white;
+    border: 1px solid #111111;
+    transition: background-color 0.2s ease;
+}
+.leave-btn-approve:hover {
+    background-color: #00897b; /* Transitions back cleanly to system brand color green on hover */
+    border-color: #00897b;
+}
+
+/* Plain clean white box frame layout design */
+.leave-btn-reject {
+    background-color: #ffffff;
+    color: #111111;
+    border: 2px solid #333333;
+    transition: all 0.2s ease;
+}
+.leave-btn-reject:hover {
+    background-color: #f2dede; /* Light soft reddish alert color tracking block on rejection component hover paths */
+    color: #a94442;
+    border-color: #a94442;
+}
+
+/* --- Report Configuration Control Interface Options Layout --- */
+
+/* Alignment labels grouping container for custom checkbox items */
+.form-checkbox-label-wrapper,
+.form-radio-label-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    width: fit-content;
+}
+
+/* Base custom text placement modifiers adjustments definitions */
+.checkbox-mock-label-text,
+.radio-mock-label-text {
+    font-size: 14px;
+    color: #222222;
+    user-select: none;
+}
+
+/* Sharp input component dimension scalings overrides adjustments */
+.real-custom-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #333333; /* Dark clean choice contrast selection tint highlights */
+    cursor: pointer;
+}
+
+.real-custom-radio {
+    width: 16px;
+    height: 16px;
+    accent-color: #333333;
+    cursor: pointer;
+}
+
+/* Horizontal alignment wrapper for radio choices rows */
+.radio-options-inline-row {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Ample separation between file format choices */
+    width: 100%;
+}
+
+/* --- Report Processing Execution Action Buttons --- */
+
+.report-btn-generate,
+.report-btn-preview {
+    padding: 14px 28px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border-radius: 0px; /* Sharp boxes edge structure profile alignment rules */
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+/* Solid main execution template box button design profiles layout definitions */
+.report-btn-generate {
+    background-color: #111111;
+    color: white;
+    border: 2px solid #111111;
+    transition: background-color 0.2s ease;
+}
+.report-btn-generate:hover {
+    background-color: #00897b; /* Transitions smoothly to primary green palette track lines on hover */
+    border-color: #00897b;
+}
+
+/* Minimal clear box button styling layout choices variables track configuration */
+.report-btn-preview {
+    background-color: #ffffff;
+    color: #111111;
+    border: 2px solid #333333;
+    transition: all 0.2s ease;
+}
+.report-btn-preview:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Admin Sessions Control Filter Panel Row Layout Components --- */
+.admin-control-filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+/* Master search container wrapping text entries alongside button forms */
+.admin-search-group {
+    display: flex;
+    align-items: center;
+    border: 2px solid #333333;
+    background-color: white;
+    box-sizing: border-box;
+    height: 40px; /* Aligns natively with custom inline filter box heights */
+}
+
+.admin-filter-search-input {
+    border: none;
+    outline: none;
+    padding: 0 14px;
+    font-size: 13px;
+    width: 320px;
+    height: 100%;
+    font-family: inherit;
+}
+
+.admin-search-execute-btn {
+    background-color: #e8e6e0; /* Neutral box fill accent */
+    color: #111111;
+    border: none;
+    border-left: 2px solid #333333; /* Distinct structural inner partition line */
+    padding: 0 20px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    height: 100%;
+    transition: background-color 0.15s ease;
+}
+.admin-search-execute-btn:hover {
+    background-color: #00897b; /* Shifts to primary theme green when hovered */
+    color: white;
+}
+
+/* Overwrite the generic leave filter height rules to stay square across admins views */
+.admin-control-filter-bar .filter-box-inline {
+    height: 40px;
+    box-sizing: border-box;
+}
+
+/* --- Admin Rules and Settings Page Layout Additions --- */
+
+/* Informative full-width callout notification banner block */
+.admin-rules-notice-banner {
+    width: 100%;
+    max-width: 1000px;
+    background-color: #e8e6e0; /* Solid light template layout grey/beige */
+    border: 1px solid #333333;   /* Clean default outline border */
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+/* Bold lowercase indicator icon formatting */
+.notice-info-icon {
+    font-family: serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: #111111;
+    user-select: none;
+}
+
+.notice-text-content {
+    font-size: 13.5px;
+    color: #222222;
+    margin: 0;
+}
+
+/* Alignment layout row grouping numeric inputs along with text descriptions */
+.rules-input-with-helper-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Sharp custom small square inputs text boxes matching wireframe layout sizing */
+.admin-rules-numeric-input {
+    width: 140px;
+    height: 44px;
+    border: 2px solid #333333;
+    background-color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center; /* Centers values inside the square */
+    font-family: inherit;
+    outline: none;
+    border-radius: 0px; /* Keeps box corners completely square */
+    box-sizing: border-box;
+}
+
+.admin-rules-numeric-input:focus {
+    border-color: #00897b; /* Transitions smoothly to primary theme green on hover focus */
+}
+
+/* Grey descriptions placement details alongside configuration rules inputs */
+.rules-field-helper-desc {
+    font-size: 13px;
+    color: #888888;
+}
+
+/* --- Admin System Activity Logs Timeline Dashboard Layout --- */
+
+/* Master container frame wrapping stack rows */
+.admin-logs-timeline-container {
+    width: 100%;
+    border: 2px solid #333333; /* Clean sharp outer boundary border lines */
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Individual line row data slots block segments */
+.log-timeline-row-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 18px 24px;
+    border-bottom: 1px solid #e0e0e0; /* Internal thin partition line separating entries */
+    box-sizing: border-box;
+    width: 100%;
+}
+.log-timeline-row-item:last-child {
+    border-bottom: none; /* Wipes the redundant line at the bottom entry element */
+}
+
+/* Left side pane container: Timestamp metrics alongside bullets */
+.log-item-meta-time {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 170px;
+    flex-shrink: 0;
+}
+
+/* Small dark marker dot indicator layout design matching wireframe */
+.log-status-bullet-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #111111;
+    border-radius: 50%; /* Keeps the point perfectly round */
+    display: inline-block;
+}
+
+.log-timestamp-text {
+    font-size: 13px;
+    color: #666666;
+    font-family: monospace; /* Monospace text format for numbers alignment matching */
+}
+
+/* Right side pane container: Message content text blocks */
+.log-item-body-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.log-main-message-text {
+    font-size: 14px;
+    color: #222222;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Grey descriptions subtext placement details down below core entries */
+.log-sub-metadata-desc {
+    font-size: 11.5px;
+    color: #999999;
+    font-family: monospace;
+}
+
+/* --- Admin Users Management Navigation Tab Controls Layout --- */
+
+.admin-user-role-tabs-row {
+    display: flex;
+    width: 100%;
+    border-bottom: 2px solid #333333; /* Thick structural guideline partition boundary rule */
+    margin-bottom: 25px;
+    gap: 5px;
+}
+
+/* Individual tab options blocks toggles configuration styling states */
+.role-toggle-tab-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #777777;
+    background-color: #f5f5f5;
+    text-decoration: none;
+    border: 2px solid #333333;
+    border-bottom: none; /* Merges the box cleanly flat into the bounding line row stack base */
+    border-radius: 0px;
+    transition: all 0.15s ease-in-out;
+    margin-bottom: -2px; /* Pulls active bottom alignment flat straight into row framework grids */
+}
+
+.role-toggle-tab-btn:hover {
+    color: #111111;
+    background-color: #e8e6e0;
+}
+
+/* Active Highlight state when clicked by administration user operators tracking */
+.role-toggle-tab-btn.active-tab {
+    color: white;
+    background-color: #333333; /* Solid signature focus layout color choice */
+    border-color: #333333;
+}
+
+.qr-display-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.qr-image-wrapper {
+    background: #fdfdfd;
+    padding: 20px;
+    border: 3px solid #00897b;
+    border-radius: 8px;
+    margin: 25px 0;
+    display: inline-block;
+}
+
+.qr-meta-badge {
+    background-color: #e8f8f5;
+    color: #00897b;
+    padding: 6px 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: inline-block;
+    letter-spacing: 0.5px;
+}
+
+.back-history-btn {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 12px 30px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background 0.2s ease;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.back-history-btn:hover {
+    background-color: #555555;
+}
+
+/* Pulse scanning indicator animation rule */
+.scanning-radar-line {
+    font-size: 13px;
+    color: #888888;
+    font-style: italic;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.scanning-radar-line::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse-glow 1.5s infinite;
+}
+@keyframes pulse-glow {
+    0% {
+        transform: scale(0.9);
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+    }
+    100% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* --- FLAT MODERN DELETE BUTTON STYLE --- */
+.delete-action-btn {
+    background-color: #e74c3c; /* Modern flat red */
+    color: #ffffff !important;   /* Force text color to white */
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.delete-action-btn:hover {
+    background-color: #c0392b; /* Darker crimson red on hover */
+    color: #ffffff !important;
+    box-shadow: 0 4px 6px rgba(192, 57, 43, 0.3);
+}
+
+.delete-action-btn:active {
+    transform: scale(0.96); /* Subtle click depression effect */
+}
+
+/* ==========================================================================
+   SAMS STUDENT WEBCAM CAMERA 1:1 SCANNING INTERFACE DESIGN
+   ========================================================================== */
+
+/* Header Area Alignment Mapping */
+.main-content .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+/* Master Centering Content Panels */
+.main-content .scanner-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.main-content .scanner-card-box {
+    background: #ffffff;
+    border: 1px solid #e8ecef;
+    padding: 40px 50px;
+    border-radius: 6px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+    text-align: center;
+    width: 100%;
+    max-width: 520px;
+    box-sizing: border-box;
+}
+
+/* Instructional Typographic Callout Header */
+.main-content .scanner-instruction-text {
+    font-size: 11px;
+    font-weight: 800;
+    color: #7f8c8d;
+    letter-spacing: 0.8px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.main-content .scanner-centering-flexgroup {
+    margin: 20px 0 30px 0;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+/* The Fixed 1:1 Black Bounding Frame Wrapper Box */
+.main-content .scanner-view-wrapper {
+    position: relative !important;
+    display: block !important;
+    width: 290px !important;
+    height: 290px !important;
+    min-width: 290px !important;
+    min-height: 290px !important;
+    max-width: 290px !important;
+    max-height: 290px !important;
+    background-color: #111111 !important;
+    border-radius: 20px !important; /* Smoothly rounded container card edges */
+    overflow: hidden !important;    /* CRITICAL: Hard-clips any spilling video edges */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* --- ACCOUNT RECOVERY GATEWAY STYLES --- */
+
+.recovery-page-body {
+    background: #f4f6f9 !important;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important; /* Forces the browser body window to take full screen height */
+    width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+}
+
+.reset-container-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 460px;
+    padding: 35px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-top: 5px solid #00897b;
+    box-sizing: border-box;
+    margin: auto; /* Ensures perfect structural equilibrium inside the flex container */
+}
+
+.reset-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.reset-header h1 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin: 0 0 8px 0;
+}
+
+.reset-header p {
+    color: #7f8c8d;
+    font-size: 13px;
+    margin: 0;
+}
+
+.form-group-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.form-field-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #34495e;
+    letter-spacing: 0.5px;
+}
+
+.form-text-layout-input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.form-text-layout-input:focus {
+    border-color: #00897b;
+    outline: none;
+}
+
+.report-btn-generate {
+    width: 100%;
+    padding: 13px;
+    background-color: #00897b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.report-btn-generate:hover {
+    background-color: #00796b;
+}
+
+.auth-back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #00897b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-back-link:hover {
+    text-decoration: underline;
+}
+
+.hidden-step-panel {
+    display: none;
+}
